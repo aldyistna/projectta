@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgColor"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:weightSum="100"
+    tools:context=".activity.ProfileActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="92"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:id="@+id/img_profile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@color/bgColor"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/profil"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHeight_default="percent"
+            app:layout_constraintHeight_percent="0.2"/>
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img_profile"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="0.7" >
+
+            <!--NIK-->
+            <TextView
+                android:id="@+id/tv_nik"
+                android:text="@string/nik"
+                style="@style/TextProfilePage.Title"/>
+
+            <TextView
+                android:id="@+id/colon1"
+                android:layout_toEndOf="@id/tv_nik"
+                style="@style/TextProfilePage.Colon"/>
+
+            <TextView
+                android:id="@+id/txt_nik"
+                android:layout_toEndOf="@id/colon1"
+                style="@style/TextProfilePage.Value"
+                tools:text="31710703019500012314142"/>
+
+            <!--Nama-->
+            <TextView
+                android:id="@+id/tv_nama"
+                android:layout_below="@id/txt_nik"
+                android:text="@string/nama"
+                style="@style/TextProfilePage.Title"/>
+
+            <TextView
+                android:id="@+id/colon2"
+                android:layout_below="@id/txt_nik"
+                android:layout_toEndOf="@id/tv_nama"
+                style="@style/TextProfilePage.Colon"/>
+
+            <TextView
+                android:id="@+id/txt_nama"
+                android:layout_below="@id/txt_nik"
+                android:layout_toEndOf="@id/colon2"
+                style="@style/TextProfilePage.Value"
+                tools:text="muh fathul mubarak"/>
+
+            <!--POB-->
+            <TextView
+                android:id="@+id/tv_pob"
+                android:layout_below="@id/txt_nama"
+                android:text="@string/tempat_lahir"
+                style="@style/TextProfilePage.Title"/>
+
+            <TextView
+                android:id="@+id/colon3"
+                android:layout_below="@id/txt_nama"
+                android:layout_toEndOf="@id/tv_pob"
+                style="@style/TextProfilePage.Colon"/>
+
+            <TextView
+                android:id="@+id/txt_pob"
+                android:layout_below="@id/txt_nama"
+                android:layout_toEndOf="@id/colon3"
+                style="@style/TextProfilePage.Value"
+                tools:text="bima"/>
+
+            <!--DOB-->
+            <TextView
+                android:id="@+id/tv_dob"
+                android:layout_below="@id/txt_pob"
+                android:text="@string/tanggal_lahir"
+                style="@style/TextProfilePage.Title"/>
+
+            <TextView
+                android:id="@+id/colon4"
+                android:layout_below="@id/txt_pob"
+                android:layout_toEndOf="@id/tv_dob"
+                style="@style/TextProfilePage.Colon"/>
+
+            <TextView
+                android:id="@+id/txt_dob"
+                android:layout_below="@id/txt_pob"
+                android:layout_toEndOf="@id/colon4"
+                style="@style/TextProfilePage.Value"
+                tools:text="1993-06-07"/>
+
+            <!--Alamat-->
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_below="@id/txt_dob"
+                android:text="@string/alamat"
+                style="@style/TextProfilePage.Title"/>
+
+            <TextView
+                android:id="@+id/colon5"
+                android:layout_below="@id/txt_dob"
+                android:layout_toEndOf="@id/tv_address"
+                style="@style/TextProfilePage.Colon"/>
+
+            <TextView
+                android:id="@+id/txt_address"
+                android:layout_below="@id/txt_dob"
+                android:layout_toEndOf="@id/colon5"
+                style="@style/TextProfilePage.Value"
+                tools:text="jl. mustafa dg bunga"/>
+
+            <!--Jekel-->
+            <TextView
+                android:id="@+id/tv_jekel"
+                android:layout_below="@id/txt_address"
+                android:text="@string/jekel"
+                style="@style/TextProfilePage.Title"/>
+
+            <TextView
+                android:id="@+id/colon6"
+                android:layout_below="@id/txt_address"
+                android:layout_toEndOf="@id/tv_jekel"
+                style="@style/TextProfilePage.Colon"/>
+
+            <TextView
+                android:id="@+id/txt_jekel"
+                android:layout_below="@id/txt_address"
+                android:layout_toEndOf="@id/colon6"
+                style="@style/TextProfilePage.Value"
+                tools:text="Laki-laki"/>
+
+            <!--Username-->
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_below="@id/txt_jekel"
+                android:text="@string/username"
+                style="@style/TextProfilePage.Title"/>
+
+            <TextView
+                android:id="@+id/colon7"
+                android:layout_below="@id/txt_jekel"
+                android:layout_toEndOf="@id/tv_username"
+                style="@style/TextProfilePage.Colon"/>
+
+            <TextView
+                android:id="@+id/txt_username"
+                android:layout_below="@id/txt_jekel"
+                android:layout_toEndOf="@id/colon7"
+                style="@style/TextProfilePage.Value"
+                tools:text="gom"/>
+
+            <!--password-->
+            <TextView
+                android:id="@+id/tv_pass"
+                android:layout_below="@id/txt_username"
+                android:text="@string/password"
+                style="@style/TextProfilePage.Title"/>
+
+            <TextView
+                android:id="@+id/colon8"
+                android:layout_below="@id/txt_username"
+                android:layout_toEndOf="@id/tv_pass"
+                style="@style/TextProfilePage.Colon"/>
+
+            <TextView
+                android:id="@+id/txt_pass"
+                android:layout_below="@id/txt_username"
+                android:layout_toEndOf="@id/colon8"
+                style="@style/TextProfilePage.Value"
+                tools:text="*******"/>
+
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btn_edit"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_click"
+            android:drawableStart="@drawable/ic_edit"
+            android:paddingStart="36dp"
+            android:paddingEnd="36dp"
+            android:text="@string/ubah_profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="0.495" />
+
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_click"
+            android:drawableStart="@drawable/ic_label"
+            android:paddingStart="52dp"
+            android:paddingEnd="52dp"
+            android:text="@string/keluar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="0.495" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

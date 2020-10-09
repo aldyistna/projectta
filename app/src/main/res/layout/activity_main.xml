@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgColor"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:weightSum="100"
+    tools:context=".activity.MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="84"
+        android:background="@android:color/white">
+
+        <ImageView
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:background="@drawable/ic_wallpaper"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/wallpaper" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:layout_marginTop="8dp">
+
+        <Button
+            android:id="@+id/btn_profile"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_click"
+            android:drawableStart="@drawable/ic_person"
+            android:paddingStart="60dp"
+            android:paddingEnd="60dp"
+            android:text="@string/profil"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="0.495" />
+
+        <Button
+            android:id="@+id/btn_lapor"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_click"
+            android:drawableStart="@drawable/ic_camera"
+            android:paddingStart="60dp"
+            android:paddingEnd="60dp"
+            android:text="@string/lapor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="0.495" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btn_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/button_click"
+        android:drawableStart="@drawable/ic_list"
+        android:paddingStart="120dp"
+        android:paddingEnd="120dp"
+        android:text="@string/daftar_laporan" />
+
+
+
+</LinearLayout>

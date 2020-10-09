@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/card_list">
+
+    <RelativeLayout
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/card_status_verif"
+        android:layout_marginTop="5dp"
+        android:paddingVertical="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="@dimen/activity_horizontal_margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txt_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            tools:text="@string/verification" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/img_lapor"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:scaleType="fitXY"
+        android:background="@color/colorPrimary"
+        android:contentDescription="@string/verification"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.25"/>
+
+    <TextView
+        android:id="@+id/txt_alamat_lapor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textSize="16sp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        app:layout_constraintEnd_toStartOf="@id/img_lapor"
+        app:layout_constraintTop_toBottomOf="@id/status"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.72"
+        tools:text="Jl. Petukangan Selatan, jakarta selatan, indonesia"/>
+
+    <TextView
+        android:id="@+id/txt_tgl_lapor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/img_lapor"
+        app:layout_constraintTop_toBottomOf="@id/txt_alamat_lapor"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.72"
+        tools:text="2020-09-09 12:11:23"/>
+
+    <TextView
+        android:id="@+id/txt_ket_lapor"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="6dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/img_lapor"
+        app:layout_constraintTop_toBottomOf="@id/txt_tgl_lapor"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent="0.72"
+        tools:text="samsat" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

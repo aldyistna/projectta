@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_verification"
+        android:icon="@drawable/ic_verification"
+        android:title="@string/verification" />
+
+    <item
+        android:id="@+id/navigation_approve"
+        android:icon="@drawable/ic_approve"
+        android:title="@string/approve" />
+
+    <item
+        android:id="@+id/navigation_finish"
+        android:icon="@drawable/ic_finish"
+        android:title="@string/finish" />
+
+    <item
+        android:id="@+id/navigation_close"
+        android:icon="@drawable/ic_close"
+        android:title="" />
+
+</menu>

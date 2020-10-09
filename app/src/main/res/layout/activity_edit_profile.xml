@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bgColor"
+    tools:context=".activity.EditProfileActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bgColor"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:weightSum="100">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="92"
+            android:background="@android:color/white"
+            android:padding="24dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_edt_nik"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/MyHintStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/txt_edt_nik"
+                    android:backgroundTint="?android:textColorHint"
+                    android:enabled="false"
+                    android:hint="@string/nik"
+                    android:importantForAutofill="no"
+                    style="@style/MyEditText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_edt_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:hintTextAppearance="@style/MyHintStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_edt_nik">
+
+                <EditText
+                    android:id="@+id/txt_edt_name"
+                    android:hint="@string/nama_lengkap"
+                    android:importantForAutofill="no"
+                    style="@style/MyEditText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_edt_pob"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:hintTextAppearance="@style/MyHintStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_edt_name">
+
+                <EditText
+                    android:id="@+id/txt_edt_pob"
+                    android:hint="@string/tempat_lahir"
+                    android:importantForAutofill="no"
+                    style="@style/MyEditText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_edt_dob"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:hintTextAppearance="@style/MyHintStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_edt_pob">
+
+                <EditText
+                    android:id="@+id/txt_edt_dob"
+                    android:hint="@string/tanggal_lahir"
+                    android:focusableInTouchMode="false"
+                    android:importantForAutofill="no"
+                    style="@style/MyEditText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_edt_alamat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:hintTextAppearance="@style/MyHintStyle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_edt_dob">
+
+                <EditText
+                    android:id="@+id/txt_edt_alamat"
+                    android:hint="@string/alamat"
+                    android:importantForAutofill="no"
+                    style="@style/MyEditText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/text_edt_jekel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_edt_alamat">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/jekel"
+                    style="@style/TextView.InputLabel" />
+
+                <Spinner
+                    android:id="@+id/txt_edt_jekel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@android:color/black"
+                    style="@style/Widget.AppCompat.Spinner.Underlined"/>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="8"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/button_click"
+            android:drawableStart="@drawable/ic_next"
+            android:paddingStart="125dp"
+            android:paddingEnd="125dp"
+            android:text="@string/selanjutnya" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/frame_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="#BA000000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateDrawable="@drawable/progress"
+            android:visibility="visible"/>
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#4AAF4F</color>
+    <color name="colorPrimaryDark">#368E3A</color>
+    <color name="colorAccent">#666666</color>
+
+    <color name="bgColor">#BFBFBF</color>
+    <color name="veriv_bg">#FAC02E</color>
+    <color name="approve_bg">#3F51B5</color>
+</resources>
