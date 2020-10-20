@@ -46,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void setView(Users users) {
         ImageView imgProfilePic = findViewById(R.id.img_profile);
 
-        if (!(users.getFoto() == null)) {
+        if (users.getFoto() == null) {
             imgProfilePic.setImageResource(R.drawable.no_photo);
         } else {
             Glide.with(this)
