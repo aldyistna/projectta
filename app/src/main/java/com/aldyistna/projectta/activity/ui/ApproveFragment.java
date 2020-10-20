@@ -313,6 +313,8 @@ public class ApproveFragment extends Fragment {
                                     e.printStackTrace();
                                 }
 
+                                paint = new Paint();
+                                y = 30;
                                 pdf.close();
                             }
 
@@ -377,10 +379,10 @@ public class ApproveFragment extends Fragment {
     public static Canvas drawText(Canvas canvas, String text, int x, Paint paint) {
         int length = text.length();
         if (text.length() > 50) {
-            String newText1 = text.substring(0, text.indexOf(' ', 50));
+            String newText1 = text.substring(0, text.lastIndexOf(' ', 50));
             canvas.drawText(newText1, x, y, paint);
             y += paint.descent() - paint.ascent() + 8;
-            String newText2 = text.substring(text.indexOf(' ', 50)+1, length);
+            String newText2 = text.substring(text.lastIndexOf(' ', 50)+1, length);
             drawText(canvas, newText2, x, paint);
         } else {
             canvas.drawText(text, x, y, paint);
