@@ -14,8 +14,8 @@ public class SPManager {
     public static final String SP_USER_ROLE = "userRole";
     public static final String SP_LOGIN = "login";
 
-    private SharedPreferences sp;
-    private SharedPreferences.Editor editor;
+    private final SharedPreferences sp;
+    private final SharedPreferences.Editor editor;
 
     @SuppressLint("CommitPrefEdits")
     public SPManager(Context context) {

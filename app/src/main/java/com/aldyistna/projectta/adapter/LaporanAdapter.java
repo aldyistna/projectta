@@ -1,8 +1,6 @@
 package com.aldyistna.projectta.adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,8 +24,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class LaporanAdapter extends RecyclerView.Adapter<LaporanAdapter.ViewHolder> {
-    private Context context;
-    private ArrayList<Laporan> listLaporan = new ArrayList<>();
+    private final Context context;
+    private final ArrayList<Laporan> listLaporan = new ArrayList<>();
 
     public LaporanAdapter(Context context) {
         this.context = context;
@@ -95,7 +93,7 @@ public class LaporanAdapter extends RecyclerView.Adapter<LaporanAdapter.ViewHold
             txtKet.setText(laporan.getKeterangan());
 
             Locale locale = context.getResources().getConfiguration().locale;
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", locale); ;
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", locale);
 
             try {
                 Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX", Locale.getDefault()).parse(laporan.getTanggal_dibuat());

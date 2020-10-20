@@ -24,18 +24,22 @@ import cz.msebera.android.httpclient.Header;
 public class LaporanViewModel extends ViewModel {
     private static final String TAG = LaporanViewModel.class.getSimpleName();
     private static final String API_URL = BuildConfig.API_URL;
-    private MutableLiveData<ArrayList<Laporan>> listLaporanVerif = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<Laporan>> listLaporanApprove = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<Laporan>> listLaporanFinish = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Laporan>> listLaporanVerif = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Laporan>> listLaporanApprove = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Laporan>> listLaporanFinish = new MutableLiveData<>();
 
     public void setLaporan(final String status, Context context) {
         SPManager spManager = new SPManager(context);
-        String userName = spManager.getSpUserName();
+        String paramQuery = "";
         AsyncHttpClient client = new AsyncHttpClient();
         final ArrayList<Laporan> listLap = new ArrayList<>();
-        Log.d("TAG", API_URL + "laporan?status=" + status + "&dibuat_oleh=" + userName);
 
-        client.get(API_URL + "laporan?status=" + status + "&dibuat_oleh=" + userName, new AsyncHttpResponseHandler() {
+        if (spManager.getSpUserRole().equals("user")) {
+            String userName = spManager.getSpUserName();
+            paramQuery = "&dibuat_oleh=" + userName;
+        }
+
+        client.get(API_URL + "laporan?status=" + status + paramQuery, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 try {

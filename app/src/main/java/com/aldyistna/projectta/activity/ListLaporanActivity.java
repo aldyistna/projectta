@@ -6,9 +6,9 @@ import android.os.Bundle;
 import com.aldyistna.projectta.activity.ui.ApproveFragment;
 import com.aldyistna.projectta.activity.ui.FinishFragment;
 import com.aldyistna.projectta.activity.ui.VerificationFragment;
+import com.aldyistna.projectta.utils.SPManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +23,6 @@ import android.widget.FrameLayout;
 import com.aldyistna.projectta.R;
 
 public class ListLaporanActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
-    private static final String TAG = ListLaporanActivity.class.getSimpleName();
 
     Fragment verifFragment = null;
     Fragment approveFragment = null;
@@ -32,12 +31,13 @@ public class ListLaporanActivity extends AppCompatActivity implements BottomNavi
 
     BottomNavigationView btnNav;
     FrameLayout frameLayout;
-    Fragment active = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_laporan);
+
+        SPManager spManager = new SPManager(this);
 
         frameLayout = findViewById(R.id.frame_layout);
         btnNav = findViewById(R.id.bottom_nav);
@@ -65,6 +65,11 @@ public class ListLaporanActivity extends AppCompatActivity implements BottomNavi
                 startActivity(new Intent(ListLaporanActivity.this, AddLaporanActivity.class));
             }
         });
+        if (spManager.getSpUserRole().equals("admin")) {
+            fab.setVisibility(View.GONE);
+        } else {
+            fab.setVisibility(View.VISIBLE);
+        }
 
         verifFragment = new VerificationFragment();
         approveFragment = new ApproveFragment();
@@ -77,19 +82,20 @@ public class ListLaporanActivity extends AppCompatActivity implements BottomNavi
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.navigation_verification:
-                fragmentManager.beginTransaction().hide(approveFragment).hide(finishFragment).show(verifFragment).commit();
-                return true;
-            case R.id.navigation_approve:
-                fragmentManager.beginTransaction().hide(verifFragment).hide(finishFragment).show(approveFragment).commit();
-                return true;
-            case R.id.navigation_finish:
-                fragmentManager.beginTransaction().hide(verifFragment).hide(approveFragment).show(finishFragment).commit();
-                return true;
-            case R.id.navigation_close:
-                onBackPressed();
-                return true;
+        if (item.getItemId() == R.id.navigation_verification) {
+            fragmentManager.beginTransaction().hide(approveFragment).hide(finishFragment).show(verifFragment).commit();
+            return true;
+        } else if (item.getItemId() == R.id.navigation_approve) {
+            fragmentManager.beginTransaction().hide(verifFragment).hide(finishFragment).show(approveFragment).commit();
+            return true;
+        } else if (item.getItemId() == R.id.navigation_finish) {
+            fragmentManager.beginTransaction().hide(verifFragment).hide(approveFragment).show(finishFragment).commit();
+            return true;
+        } else if (item.getItemId() == R.id.navigation_close) {
+            startActivity(new Intent(ListLaporanActivity.this, MainActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+            finish();
+            return true;
         }
         return false;
     }

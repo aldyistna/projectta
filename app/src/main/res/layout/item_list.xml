@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
+    android:layout_marginBottom="8dp"
     android:background="@drawable/card_list">
 
     <RelativeLayout
@@ -14,9 +14,8 @@
         android:layout_height="match_parent"
         android:background="@drawable/card_status_verif"
         android:layout_marginTop="5dp"
-        android:paddingVertical="10dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="@dimen/activity_horizontal_margin"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="@dimen/activity_horizontal_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -40,46 +39,50 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_default="percent"
-        app:layout_constraintWidth_percent="0.25"/>
+        app:layout_constraintWidth_percent="0.27"/>
 
     <TextView
         android:id="@+id/txt_alamat_lapor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:layout_marginStart="10dp"
         android:textSize="16sp"
         android:ellipsize="end"
         android:maxLines="2"
-        app:layout_constraintEnd_toStartOf="@id/img_lapor"
+        android:lines="2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/status"
         app:layout_constraintWidth_default="percent"
-        app:layout_constraintWidth_percent="0.72"
+        app:layout_constraintWidth_percent="0.67"
         tools:text="Jl. Petukangan Selatan, jakarta selatan, indonesia"/>
 
     <TextView
         android:id="@+id/txt_tgl_lapor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@id/img_lapor"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_alamat_lapor"
         app:layout_constraintWidth_default="percent"
-        app:layout_constraintWidth_percent="0.72"
+        app:layout_constraintWidth_percent="0.67"
         tools:text="2020-09-09 12:11:23"/>
 
     <TextView
         android:id="@+id/txt_ket_lapor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="6dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginStart="10dp"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/img_lapor"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txt_tgl_lapor"
         app:layout_constraintWidth_default="percent"
-        app:layout_constraintWidth_percent="0.72"
+        app:layout_constraintWidth_percent="0.67"
         tools:text="samsat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

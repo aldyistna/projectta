@@ -6,8 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bgColor"
-    android:paddingVertical="3dp"
-    android:paddingHorizontal="2dp"
+    android:layout_marginBottom="-5dp"
+    android:paddingTop="3dp"
+    android:paddingHorizontal="3dp"
     tools:context=".activity.ui.FinishFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

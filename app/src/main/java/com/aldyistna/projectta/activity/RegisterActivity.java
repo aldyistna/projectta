@@ -3,23 +3,18 @@ package com.aldyistna.projectta.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.aldyistna.projectta.BuildConfig;
-import com.aldyistna.projectta.R;
-import com.aldyistna.projectta.entity.Users;
-import com.aldyistna.projectta.utils.SPManager;
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.InputType;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -30,15 +25,27 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aldyistna.projectta.BuildConfig;
+import com.aldyistna.projectta.R;
+import com.aldyistna.projectta.utils.SPManager;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,37 +58,37 @@ import java.util.Objects;
 
 import cz.msebera.android.httpclient.Header;
 
-public class EditProfileActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final String TAG = EditProfileActivity.class.getSimpleName();
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = RegisterActivity.class.getSimpleName();
     private static final String API_URL = BuildConfig.API_URL;
 
-    private ProgressBar progressBar;
-    private RelativeLayout frameProgress;
-    DatePickerDialog picker;
-    EditText edtNIK, edtNama, edtPOB, edtDOB, edtAlamat;
-    Spinner edtJekel;
     SPManager spManager;
     InputMethodManager inputManager;
-    Users users;
+    private ProgressBar progressBar;
+    private RelativeLayout frameProgress;
+
+    DatePickerDialog picker;
+    EditText edtNIK, edtNama, edtPOB, edtDOB, edtAlamat, edtUsername, edtPass;
+    Spinner edtJekel;
+    ImageView imgFoto;
 
     private final String[] listJekel = {"- Pilih Jenis Kelamin -", "Laki-laki", "Perempuan"};
+    File file = null;
+    Uri selectedImage;
+    String dob = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
+        setContentView(R.layout.activity_register);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Data Pelapor");
+            getSupportActionBar().setTitle("Daftar");
         }
 
         spManager = new SPManager(this);
         inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
-
-        Gson gson = new Gson();
-        String json = spManager.getSpUser();
-        users = gson.fromJson(json, Users.class);
 
         final List<String> jekelList = new ArrayList<>(Arrays.asList(listJekel));
         edtJekel = findViewById(R.id.txt_edt_jekel);
@@ -109,44 +116,41 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         edtNama = findViewById(R.id.txt_edt_name);
         edtPOB = findViewById(R.id.txt_edt_pob);
         edtDOB = findViewById(R.id.txt_edt_dob);
-        edtAlamat = findViewById(R.id.txt_edt_alamat);
+        edtAlamat = findViewById(R.id.txt_edt_adr);
+        edtUsername = findViewById(R.id.txt_edt_username);
+        edtPass = findViewById(R.id.txt_edt_pass);
 
         progressBar = findViewById(R.id.progress_bar);
         frameProgress = findViewById(R.id.frame_progress);
 
-        edtNIK.setText(users.getNik());
-        edtNama.setText(users.getName());
-        edtPOB.setText(users.getPob());
-        edtDOB.setText(users.getDob());
-        edtAlamat.setText(users.getAlamat());
-        edtJekel.setSelection(Arrays.asList(listJekel).indexOf(users.getJekel()));
-
-        edtNIK.setTextColor(Color.parseColor("#C4C4C4"));
         edtDOB.setInputType(InputType.TYPE_NULL);
         edtDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar calendar = Calendar.getInstance();
-                try {
-                    Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(users.getDob());
-                    assert date != null;
-                    calendar.setTime(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+
+                if (!dob.isEmpty()) {
+                    try {
+                        Date date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(dob);
+                        assert date != null;
+                        calendar.setTime(date);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 int day = calendar.get(Calendar.DAY_OF_MONTH);
                 int month = calendar.get(Calendar.MONTH);
                 int year = calendar.get(Calendar.YEAR);
 
-                picker = new DatePickerDialog(EditProfileActivity.this, R.style.MySpinnerDatePickerStyle, new DatePickerDialog.OnDateSetListener() {
+                picker = new DatePickerDialog(RegisterActivity.this, R.style.MySpinnerDatePickerStyle, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                         month = month +1;
                         String sMonth = month < 10 ? "0" + month : String.valueOf(month);
                         String sDay = dayOfMonth < 10 ? "0" + dayOfMonth : String.valueOf(dayOfMonth);
                         String text = year + "-" + sMonth + "-" + sDay;
-                        users.setDob(text);
+                        dob = text;
                         edtDOB.setText(text);
                     }
                 }, year, month, day);
@@ -154,8 +158,57 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        Button btnNext = findViewById(R.id.btn_next);
-        btnNext.setOnClickListener(this);
+        imgFoto = findViewById(R.id.img_profile);
+        imgFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectImage();
+            }
+        });
+
+        Button btnSave = findViewById(R.id.btn_save);
+        Button btnBack = findViewById(R.id.btn_back);
+        btnSave.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
+    }
+
+    public void selectImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            try {
+                file = createImageFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        startActivityForResult(intent, 2);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != RESULT_OK)
+            return;
+
+        if (requestCode == 2) {
+            selectedImage = data.getData();
+            imgFoto.setImageURI(selectedImage);
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        return File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
     }
 
     @Override
@@ -166,8 +219,24 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             networkInfo = connectivityManager.getActiveNetworkInfo();
         }
 
-        if (v.getId() == R.id.btn_next) {
-            Log.d(TAG, "onClick: ");
+        if (v.getId() == R.id.btn_back) {
+            onBackPressed();
+            finish();
+        } else if (v.getId() == R.id.btn_save) {
+            EditText[] fields = {edtNIK, edtNama, edtPOB, edtDOB, edtAlamat, edtUsername, edtPass};
+            for (EditText current : fields) {
+                String strCurrent = current.getText().toString();
+                if (!(strCurrent.trim().length() > 0)) {
+                    makeToast("Field cannot empty");
+                    return;
+                }
+            }
+
+            if (edtJekel.getSelectedItem() == listJekel[0]) {
+                makeToast("Field cannot empty");
+                return;
+            }
+
             if (inputManager != null) {
                 if (getCurrentFocus() != null) {
                     inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
@@ -176,50 +245,72 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
             if (networkInfo != null && networkInfo.isConnected()) {
                 frameProgress.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.VISIBLE);
-                editProfile();
+                registerUser();
             } else {
                 makeToast("No Internet Connection");
             }
         }
     }
 
-    private void editProfile() {
+    private void registerUser() {
         AsyncHttpClient client = new AsyncHttpClient();
 
         RequestParams params = new RequestParams();
-        params.put("nik", users.getNik());
+        params.put("nik", edtNIK.getText());
         params.put("name", edtNama.getText());
         params.put("pob", edtPOB.getText());
         params.put("dob", edtDOB.getText());
         params.put("alamat", edtAlamat.getText());
         params.put("jekel", edtJekel.getSelectedItem());
-        params.put("username", users.getUsername());
-        params.put("password", users.getPassword());
-        params.put("role", users.getRole());
+        params.put("username", edtUsername.getText());
+        params.put("password", edtPass.getText());
+        params.put("role", "user");
+
+        if (selectedImage != null) {
+            OutputStream outStream;
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                outStream = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+                outStream.close();
+                params.put("files", file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
         client.post(API_URL + "/users", params, new AsyncHttpResponseHandler() {
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 String result = new String(responseBody);
                 try {
                     JSONObject resObject = new JSONObject(result);
-
                     frameProgress.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
+
                     if (resObject.getString("status").equals("NU01")) {
                         makeToast("Username sudah digunakan");
                     } else {
-                        JSONObject val = resObject.getJSONObject("data");
-                        Users users = new Users(val);
-                        Gson gson = new Gson();
-                        String json = gson.toJson(users);
-                        spManager.saveString(SPManager.SP_USER, json);
-                        startActivity(new Intent(EditProfileActivity.this, ProfileActivity.class)
+                        if (file != null) {
+                            if (file.exists()) {
+                                Boolean deleted = file.delete();
+                                Log.e(TAG + " onSuccess", String.valueOf(deleted));
+                            }
+                        }
+                        makeToast("Berhasil daftar, silahkan login");
+                        startActivity(new Intent(RegisterActivity.this, LoginActivity.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                         finish();
                     }
 
                 } catch (JSONException e) {
+                    if (file != null) {
+                        if (file.exists()) {
+                            Boolean deleted = file.delete();
+                            Log.e(TAG + " JSONException", String.valueOf(deleted));
+                        }
+                    }
                     frameProgress.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     makeToast("Something's wrong");
@@ -229,12 +320,19 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                if (file != null) {
+                    if (file.exists()) {
+                        Boolean deleted = file.delete();
+                        Log.e(TAG + " onFailure", String.valueOf(deleted));
+                    }
+                }
                 frameProgress.setVisibility(View.GONE);
                 progressBar.setVisibility(View.GONE);
                 makeToast("Something's wrong");
                 Log.e(TAG + " onFailure", Objects.requireNonNull(error.getMessage()));
             }
         });
+
     }
 
     private void makeToast(String message) {

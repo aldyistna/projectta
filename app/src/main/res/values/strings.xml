@@ -3,7 +3,6 @@
     <string name="profil">Profil</string>
     <string name="lapor">Lapor</string>
     <string name="daftar_laporan">Daftar Laporan</string>
-    <string name="logout">Logout</string>
     <string name="wallpaper">Wallpaper</string>
     <string name="nik">Nomor KTP</string>
     <string name="nama">Nama</string>
@@ -21,33 +20,18 @@
     <string name="selanjutnya">Selanjutnya</string>
     <string name="nama_lengkap">Nama Lengkap</string>
 
-    <string-array name="jekel_list">
-        <item>Laki-laki</item>
-        <item>Perempuan</item>
-    </string-array>
-    <string name="title_activity_daftar_laporan">MainActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
     <string name="verification">Verification</string>
     <string name="approve">Approve</string>
     <string name="finish">Finish</string>
-    <string name="close">Close</string>
     <string name="title_activity_list_laporan">ListLaporanActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_add_laporan">AddLaporanActivity</string>
     <string name="no_data">Tidak ada laporan diverifikasi saat ini</string>
+    <string name="notif_message">Berhasil download laporan, klik untuk membuka</string>
     <string name="no_internet">Tidak ada internet</string>
     <string name="foto">Foto</string>
     <string name="keterangan">Keterangan</string>
     <string name="kirim">Kirim</string>
     <string name="lokasi">Lokasi</string>
+    <string name="simpan">Simpan</string>
+    <string name="kembali">Kembali</string>
 </resources>

@@ -36,18 +36,29 @@
         android:layout_marginTop="8dp">
 
         <Button
+            android:id="@+id/btn_profile2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/button_click"
+            android:drawableStart="@drawable/ic_person"
+            android:paddingStart="140dp"
+            android:paddingEnd="140dp"
+            android:text="@string/profil"
+            android:visibility="gone"/>
+
+        <Button
             android:id="@+id/btn_profile"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:background="@drawable/button_click"
             android:drawableStart="@drawable/ic_person"
-            android:paddingStart="60dp"
-            android:paddingEnd="60dp"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp"
             android:text="@string/profil"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent="0.495" />
+            app:layout_constraintWidth_percent="0.495"/>
 
         <Button
             android:id="@+id/btn_lapor"
@@ -55,13 +66,13 @@
             android:layout_height="match_parent"
             android:background="@drawable/button_click"
             android:drawableStart="@drawable/ic_camera"
-            android:paddingStart="60dp"
-            android:paddingEnd="60dp"
+            android:paddingStart="50dp"
+            android:paddingEnd="50dp"
             android:text="@string/lapor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent="0.495" />
+            app:layout_constraintWidth_percent="0.495"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -73,8 +84,8 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/button_click"
         android:drawableStart="@drawable/ic_list"
-        android:paddingStart="120dp"
-        android:paddingEnd="120dp"
+        android:paddingStart="100dp"
+        android:paddingEnd="100dp"
         android:text="@string/daftar_laporan" />
 
 

@@ -79,34 +79,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             networkInfo = connectivityManager.getActiveNetworkInfo();
         }
 
-        switch (v.getId()) {
-            case R.id.btn_masuk:
-                String userName = edtUserName.getText().toString();
-                String pass = edtPass.getText().toString();
-                if (userName.trim().length() > 0 && pass.trim().length() > 0) {
+        if (v.getId() == R.id.btn_masuk) {
+            String userName = edtUserName.getText().toString();
+            String pass = edtPass.getText().toString();
+            if (userName.trim().length() > 0 && pass.trim().length() > 0) {
 
-                    if (inputManager != null) {
-                        if (getCurrentFocus() != null) {
-                            inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                        }
+                if (inputManager != null) {
+                    if (getCurrentFocus() != null) {
+                        inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                     }
-
-                    if (networkInfo != null && networkInfo.isConnected()) {
-                        frameProgress.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.VISIBLE);
-                        login(userName, pass);
-                    } else {
-                        makeToast("No Internet Connection");
-                    }
-                } else {
-                    makeToast("Username and password cannot empty");
                 }
-                break;
-            case R.id.tv_daftar:
-//                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-                break;
-        }
 
+                if (networkInfo != null && networkInfo.isConnected()) {
+                    frameProgress.setVisibility(View.VISIBLE);
+                    progressBar.setVisibility(View.VISIBLE);
+                    login(userName, pass);
+                } else {
+                    makeToast("No Internet Connection");
+                }
+            } else {
+                makeToast("Username and password cannot empty");
+            }
+        } else if (v.getId() == R.id.tv_daftar) {
+            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+        }
     }
 
     public void login(String username, String password) {
@@ -134,6 +130,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         spManager.saveString(SPManager.SP_USER, json);
                         spManager.saveString(SPManager.SP_USER_NAME, val.getString("username"));
                         spManager.saveInt(SPManager.SP_USER_ID, val.getInt("id"));
+                        spManager.saveString(SPManager.SP_USER_ROLE, val.getString("role"));
                         spManager.saveBoolean(SPManager.SP_LOGIN, true);
                         startActivity(new Intent(LoginActivity.this, MainActivity.class)
                                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));

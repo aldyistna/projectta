@@ -10,6 +10,7 @@ public class Laporan {
     private String tanggal_dibuat;
     private String status;
     private String gambar;
+    private Users users;
 
     public Laporan() {}
 
@@ -21,6 +22,7 @@ public class Laporan {
             String tanggal_dibuat = object.getString("tanggal_dibuat");
             String status = object.getString("status");
             String gambar = object.getString("gambar");
+            Users users = new Users(object.getJSONObject("user"));
 
             this.lap_id = lap_id;
             this.location = location;
@@ -28,6 +30,7 @@ public class Laporan {
             this.tanggal_dibuat = tanggal_dibuat;
             this.status = status;
             this.gambar = gambar;
+            this.users = users;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -79,5 +82,13 @@ public class Laporan {
 
     public void setGambar(String gambar) {
         this.gambar = gambar;
+    }
+
+    public Users getUsers() {
+        return users;
+    }
+
+    public void setUsers(Users users) {
+        this.users = users;
     }
 }
