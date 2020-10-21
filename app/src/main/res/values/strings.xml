@@ -27,11 +27,12 @@
     <string name="title_activity_add_laporan">AddLaporanActivity</string>
     <string name="no_data">Tidak ada laporan diverifikasi saat ini</string>
     <string name="notif_message">Berhasil download laporan, klik untuk membuka</string>
-    <string name="no_internet">Tidak ada internet</string>
+    <string name="no_internet">Tidak ada koneksi internet</string>
     <string name="foto">Foto</string>
     <string name="keterangan">Keterangan</string>
     <string name="kirim">Kirim</string>
     <string name="lokasi">Lokasi</string>
     <string name="simpan">Simpan</string>
     <string name="kembali">Kembali</string>
+    <string name="download">Download</string>
 </resources>

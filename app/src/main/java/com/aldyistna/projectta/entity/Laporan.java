@@ -7,10 +7,11 @@ public class Laporan {
     private String lap_id;
     private String location;
     private String keterangan;
-    private String tanggal_dibuat;
+    private String tanggal;
     private String status;
     private String gambar;
     private Users users;
+    private boolean selected;
 
     public Laporan() {}
 
@@ -19,18 +20,30 @@ public class Laporan {
             String lap_id = object.getString("lap_id");
             String location = object.getString("location");
             String keterangan = object.getString("keterangan");
-            String tanggal_dibuat = object.getString("tanggal_dibuat");
             String status = object.getString("status");
+            String tanggal = "";
+            switch (status) {
+                case "Verification":
+                    tanggal = object.getString("tanggal_dibuat");
+                    break;
+                case "Approve":
+                    tanggal = object.getString("tanggal_approve");
+                    break;
+                case "Finish":
+                    tanggal = object.getString("tanggal_finish");
+                    break;
+            }
             String gambar = object.getString("gambar");
             Users users = new Users(object.getJSONObject("user"));
 
             this.lap_id = lap_id;
             this.location = location;
             this.keterangan = keterangan;
-            this.tanggal_dibuat = tanggal_dibuat;
+            this.tanggal = tanggal;
             this.status = status;
             this.gambar = gambar;
             this.users = users;
+            this.selected = false;
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -60,12 +73,12 @@ public class Laporan {
         this.keterangan = keterangan;
     }
 
-    public String getTanggal_dibuat() {
-        return tanggal_dibuat;
+    public String getTanggal() {
+        return tanggal;
     }
 
-    public void setTanggal_dibuat(String tanggal_dibuat) {
-        this.tanggal_dibuat = tanggal_dibuat;
+    public void setTanggal(String tanggal) {
+        this.tanggal = tanggal;
     }
 
     public String getStatus() {
@@ -90,5 +103,13 @@ public class Laporan {
 
     public void setUsers(Users users) {
         this.users = users;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

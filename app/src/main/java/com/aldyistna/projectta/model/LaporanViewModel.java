@@ -28,6 +28,22 @@ public class LaporanViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<Laporan>> listLaporanApprove = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Laporan>> listLaporanFinish = new MutableLiveData<>();
 
+    public handleFailureVerification handleFailureVerification;
+    public handleFailureApprove handleFailureApprove;
+    public handleFailureFinish handleFailureFinish;
+
+    public void LaporanViewModelVerification(handleFailureVerification fail) {
+        handleFailureVerification = fail;
+    }
+
+    public void LaporanViewModelApprove(handleFailureApprove fail) {
+        handleFailureApprove = fail;
+    }
+
+    public void LaporanViewModelFinish(handleFailureFinish fail) {
+        handleFailureFinish = fail;
+    }
+
     public void setLaporan(final String status, Context context) {
         SPManager spManager = new SPManager(context);
         String paramQuery = "";
@@ -71,6 +87,17 @@ public class LaporanViewModel extends ViewModel {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                switch (status) {
+                    case "Verification":
+                        handleFailureVerification.onFailureLoad();
+                        break;
+                    case "Approve":
+                        handleFailureApprove.onFailureLoad();
+                        break;
+                    case "Finish":
+                        handleFailureFinish.onFailureLoad();
+                        break;
+                }
                 Log.e(TAG + " onFailure", Objects.requireNonNull(error.getMessage()));
             }
         });
@@ -86,5 +113,17 @@ public class LaporanViewModel extends ViewModel {
 
     public LiveData<ArrayList<Laporan>> getLaporanFinish() {
         return listLaporanFinish;
+    }
+
+    public interface handleFailureVerification {
+        void onFailureLoad();
+    }
+
+    public interface handleFailureApprove {
+        void onFailureLoad();
+    }
+
+    public interface handleFailureFinish {
+        void onFailureLoad();
     }
 }

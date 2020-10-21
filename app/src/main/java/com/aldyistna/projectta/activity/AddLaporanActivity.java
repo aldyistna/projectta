@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -20,8 +21,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.aldyistna.projectta.BuildConfig;
@@ -50,8 +49,7 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
     ImageView imgFoto;
     EditText edtLoc, edtKet;
     Button btnNext;
-    private ProgressBar progressBar;
-    private RelativeLayout frameProgress;
+    ProgressDialog progressDialog;
     File images = null;
     String currentPhotoPath = "";
 
@@ -83,8 +81,7 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
         edtLoc = findViewById(R.id.txt_loc);
         edtKet = findViewById(R.id.txt_ket);
 
-        progressBar = findViewById(R.id.progress_bar);
-        frameProgress = findViewById(R.id.frame_progress);
+        progressDialog = new ProgressDialog(this);
 
         imgFoto = findViewById(R.id.img_foto);
         imgFoto.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +153,7 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
             if (connectivityManager != null) {
                 networkInfo = connectivityManager.getActiveNetworkInfo();
             }
-            if (images == null) {
+            if (currentPhotoPath.equals("")) {
                 makeToast("Tidak ada foto untuk dilaporkan");
                 return;
             }
@@ -169,11 +166,13 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
                     }
                 }
                 if (networkInfo != null && networkInfo.isConnected()) {
-                    frameProgress.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.VISIBLE);
+                    progressDialog.setTitle("Proses");
+                    progressDialog.setMessage("Silahkan tunggu...");
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
                     postLaporan(loc, ket);
                 } else {
-                    makeToast("No Internet Connection");
+                    makeToast(getString(R.string.no_internet));
                 }
             } else {
                 makeToast("Lokasi dan Keterangan tidak boleh kosong");
@@ -190,11 +189,13 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
         params.put("status", "Verification");
         params.put("username", spManager.getSpUserName());
         File file = null;
-        try {
-            file = new File(currentPhotoPath);
-            params.put("file", file);
-        } catch (FileNotFoundException e) {
-            makeToast("Silahkan masukkan foto");
+        if (!currentPhotoPath.equals("")) {
+            try {
+                file = new File(currentPhotoPath);
+                params.put("file", file);
+            } catch (FileNotFoundException e) {
+                makeToast("Silahkan masukkan foto");
+            }
         }
 
         final File finalFile = file;
@@ -213,8 +214,9 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
                         Log.e(TAG + " onSuccess", String.valueOf(deleted));
                     }
                 }
-                frameProgress.setVisibility(View.GONE);
-                progressBar.setVisibility(View.GONE);
+                if(progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
                 makeToast("Success add laporan");
                 startActivity(new Intent(AddLaporanActivity.this, ListLaporanActivity.class));
                 finish();
@@ -234,9 +236,10 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
                         Log.e(TAG + " onFailure", String.valueOf(deleted));
                     }
                 }
-                frameProgress.setVisibility(View.GONE);
-                progressBar.setVisibility(View.GONE);
-                makeToast("Post failed");
+                if(progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+                makeToast("Terjadi kesalahan, silahkan coba lagi");
                 Log.e(TAG + " onFailure", Objects.requireNonNull(error.getMessage()));
             }
         });

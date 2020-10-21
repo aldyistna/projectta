@@ -58,4 +58,28 @@
         app:itemIconTint="@android:color/white"
         app:menu="@menu/bottom_nav_menu"/>
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccent"
+        app:labelVisibilityMode="unlabeled"
+        app:itemTextColor="@color/colorPrimary"
+        app:itemIconTint="@android:color/white"
+        app:menu="@menu/bottom_nav_menu2"
+        android:visibility="gone"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_nav3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccent"
+        app:labelVisibilityMode="unlabeled"
+        app:itemTextColor="@color/colorPrimary"
+        app:itemIconTint="@android:color/white"
+        app:menu="@menu/bottom_nav_menu3"
+        android:visibility="gone"/>
+
 </RelativeLayout>

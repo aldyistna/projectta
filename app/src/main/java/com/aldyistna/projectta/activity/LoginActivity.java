@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     progressBar.setVisibility(View.VISIBLE);
                     login(userName, pass);
                 } else {
-                    makeToast("No Internet Connection");
+                    makeToast(getString(R.string.no_internet));
                 }
             } else {
                 makeToast("Username and password cannot empty");

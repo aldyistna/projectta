@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -26,8 +27,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,8 +63,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     SPManager spManager;
     InputMethodManager inputManager;
-    private ProgressBar progressBar;
-    private RelativeLayout frameProgress;
+    ProgressDialog progressDialog;
 
     DatePickerDialog picker;
     EditText edtNIK, edtNama, edtPOB, edtDOB, edtAlamat, edtUsername, edtPass;
@@ -120,8 +118,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         edtUsername = findViewById(R.id.txt_edt_username);
         edtPass = findViewById(R.id.txt_edt_pass);
 
-        progressBar = findViewById(R.id.progress_bar);
-        frameProgress = findViewById(R.id.frame_progress);
+        progressDialog = new ProgressDialog(this);
 
         edtDOB.setInputType(InputType.TYPE_NULL);
         edtDOB.setOnClickListener(new View.OnClickListener() {
@@ -243,11 +240,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }
             }
             if (networkInfo != null && networkInfo.isConnected()) {
-                frameProgress.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.VISIBLE);
+                progressDialog.setTitle("Proses");
+                progressDialog.setMessage("Silahkan tunggu...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
                 registerUser();
             } else {
-                makeToast("No Internet Connection");
+                makeToast(getString(R.string.no_internet));
             }
         }
     }
@@ -286,8 +285,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 String result = new String(responseBody);
                 try {
                     JSONObject resObject = new JSONObject(result);
-                    frameProgress.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.GONE);
+                    if(progressDialog.isShowing()){
+                        progressDialog.dismiss();
+                    }
 
                     if (resObject.getString("status").equals("NU01")) {
                         makeToast("Username sudah digunakan");
@@ -311,8 +311,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             Log.e(TAG + " JSONException", String.valueOf(deleted));
                         }
                     }
-                    frameProgress.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.GONE);
+                    if(progressDialog.isShowing()){
+                        progressDialog.dismiss();
+                    }
                     makeToast("Something's wrong");
                     Log.e(TAG + " JSONException", Objects.requireNonNull(e.getMessage()));
                 }
@@ -326,9 +327,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         Log.e(TAG + " onFailure", String.valueOf(deleted));
                     }
                 }
-                frameProgress.setVisibility(View.GONE);
-                progressBar.setVisibility(View.GONE);
-                makeToast("Something's wrong");
+                if(progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+                makeToast("Terjadi kesalahan, silahkan coba lagi");
                 Log.e(TAG + " onFailure", Objects.requireNonNull(error.getMessage()));
             }
         });

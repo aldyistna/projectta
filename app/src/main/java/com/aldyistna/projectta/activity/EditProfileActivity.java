@@ -13,6 +13,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -30,8 +31,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,14 +54,13 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private static final String TAG = EditProfileActivity.class.getSimpleName();
     private static final String API_URL = BuildConfig.API_URL;
 
-    private ProgressBar progressBar;
-    private RelativeLayout frameProgress;
     DatePickerDialog picker;
     EditText edtNIK, edtNama, edtPOB, edtDOB, edtAlamat;
     Spinner edtJekel;
     SPManager spManager;
     InputMethodManager inputManager;
     Users users;
+    ProgressDialog progressDialog;
 
     private final String[] listJekel = {"- Pilih Jenis Kelamin -", "Laki-laki", "Perempuan"};
 
@@ -111,8 +109,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         edtDOB = findViewById(R.id.txt_edt_dob);
         edtAlamat = findViewById(R.id.txt_edt_alamat);
 
-        progressBar = findViewById(R.id.progress_bar);
-        frameProgress = findViewById(R.id.frame_progress);
+        progressDialog = new ProgressDialog(this);
 
         edtNIK.setText(users.getNik());
         edtNama.setText(users.getName());
@@ -174,11 +171,13 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 }
             }
             if (networkInfo != null && networkInfo.isConnected()) {
-                frameProgress.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.VISIBLE);
+                progressDialog.setTitle("Proses");
+                progressDialog.setMessage("Silahkan tunggu...");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
                 editProfile();
             } else {
-                makeToast("No Internet Connection");
+                makeToast(getString(R.string.no_internet));
             }
         }
     }
@@ -204,8 +203,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                 try {
                     JSONObject resObject = new JSONObject(result);
 
-                    frameProgress.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.GONE);
+                    if(progressDialog.isShowing()){
+                        progressDialog.dismiss();
+                    }
                     if (resObject.getString("status").equals("NU01")) {
                         makeToast("Username sudah digunakan");
                     } else {
@@ -220,8 +220,9 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                     }
 
                 } catch (JSONException e) {
-                    frameProgress.setVisibility(View.GONE);
-                    progressBar.setVisibility(View.GONE);
+                    if(progressDialog.isShowing()){
+                        progressDialog.dismiss();
+                    }
                     makeToast("Something's wrong");
                     Log.e(TAG + " JSONException", Objects.requireNonNull(e.getMessage()));
                 }
@@ -229,9 +230,10 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                frameProgress.setVisibility(View.GONE);
-                progressBar.setVisibility(View.GONE);
-                makeToast("Something's wrong");
+                if(progressDialog.isShowing()){
+                    progressDialog.dismiss();
+                }
+                makeToast("Terjadi kesalahan, silahkan coba lagi");
                 Log.e(TAG + " onFailure", Objects.requireNonNull(error.getMessage()));
             }
         });

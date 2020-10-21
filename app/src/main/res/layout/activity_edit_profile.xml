@@ -155,25 +155,4 @@
 
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/frame_progress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:background="#BA000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone">
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminateDrawable="@drawable/progress"
-            android:visibility="visible"/>
-
-    </RelativeLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
