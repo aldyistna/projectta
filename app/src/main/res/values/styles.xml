@@ -29,7 +29,7 @@
     </style>
 
     <style name="TextProfilePage.Title">
-        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_width">100dp</item>
     </style>
 
     <style name="TextProfilePage.Colon">

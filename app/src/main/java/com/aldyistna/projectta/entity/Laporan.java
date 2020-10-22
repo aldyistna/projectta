@@ -9,6 +9,8 @@ public class Laporan {
     private String keterangan;
     private String tanggal;
     private String status;
+    private String phone;
+    private String saksi;
     private String gambar;
     private Users users;
     private boolean selected;
@@ -33,6 +35,8 @@ public class Laporan {
                     tanggal = object.getString("tanggal_finish");
                     break;
             }
+            String phone = object.getString("no_telp");
+            String saksi = object.getString("saksi_mata");
             String gambar = object.getString("gambar");
             Users users = new Users(object.getJSONObject("user"));
 
@@ -41,6 +45,8 @@ public class Laporan {
             this.keterangan = keterangan;
             this.tanggal = tanggal;
             this.status = status;
+            this.phone = phone;
+            this.saksi = saksi;
             this.gambar = gambar;
             this.users = users;
             this.selected = false;
@@ -111,5 +117,21 @@ public class Laporan {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getSaksi() {
+        return saksi;
+    }
+
+    public void setSaksi(String saksi) {
+        this.saksi = saksi;
     }
 }

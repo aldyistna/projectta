@@ -55,7 +55,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
     private static final String API_URL = BuildConfig.API_URL;
 
     DatePickerDialog picker;
-    EditText edtNIK, edtNama, edtPOB, edtDOB, edtAlamat;
+    EditText edtNIK, edtNama, edtPOB, edtDOB, edtAlamat, edtPhone;
     Spinner edtJekel;
     SPManager spManager;
     InputMethodManager inputManager;
@@ -82,7 +82,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         users = gson.fromJson(json, Users.class);
 
         final List<String> jekelList = new ArrayList<>(Arrays.asList(listJekel));
-        edtJekel = findViewById(R.id.txt_edt_jekel);
+        edtJekel = findViewById(R.id.input_jekel);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_textview, jekelList) {
             @Override
             public boolean isEnabled(int pos) {
@@ -103,11 +103,12 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         };
         edtJekel.setAdapter(adapter);
 
-        edtNIK = findViewById(R.id.txt_edt_nik);
-        edtNama = findViewById(R.id.txt_edt_name);
-        edtPOB = findViewById(R.id.txt_edt_pob);
-        edtDOB = findViewById(R.id.txt_edt_dob);
-        edtAlamat = findViewById(R.id.txt_edt_alamat);
+        edtNIK = findViewById(R.id.input_nik);
+        edtNama = findViewById(R.id.input_nama);
+        edtPOB = findViewById(R.id.input_tempat_lahir);
+        edtDOB = findViewById(R.id.input_tanggal_lahir);
+        edtAlamat = findViewById(R.id.input_alamat);
+        edtPhone = findViewById(R.id.input_phone);
 
         progressDialog = new ProgressDialog(this);
 
@@ -116,6 +117,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         edtPOB.setText(users.getPob());
         edtDOB.setText(users.getDob());
         edtAlamat.setText(users.getAlamat());
+        edtPhone.setText(users.getPhone());
         edtJekel.setSelection(Arrays.asList(listJekel).indexOf(users.getJekel()));
 
         edtNIK.setTextColor(Color.parseColor("#C4C4C4"));
@@ -164,7 +166,18 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         }
 
         if (v.getId() == R.id.btn_next) {
-            Log.d(TAG, "onClick: ");
+            EditText[] fields = {edtNIK, edtNama, edtPOB, edtDOB, edtAlamat, edtPhone};
+            for (EditText current : fields) {
+                String strCurrent = current.getText().toString();
+                if (!(strCurrent.trim().length() > 0)) {
+                    makeToast("Field " + current.getResources().getResourceName(current.getId()).split("/")[1] + " tidak boleh kosong");
+                    return;
+                }
+            }
+            if (edtJekel.getSelectedItem() == listJekel[0]) {
+                makeToast("Field jenis kelamin tidak boleh kosong");
+                return;
+            }
             if (inputManager != null) {
                 if (getCurrentFocus() != null) {
                     inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
@@ -191,6 +204,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
         params.put("pob", edtPOB.getText());
         params.put("dob", edtDOB.getText());
         params.put("alamat", edtAlamat.getText());
+        params.put("phone", edtPhone.getText());
         params.put("jekel", edtJekel.getSelectedItem());
         params.put("username", users.getUsername());
         params.put("password", users.getPassword());
@@ -207,7 +221,7 @@ public class EditProfileActivity extends AppCompatActivity implements View.OnCli
                         progressDialog.dismiss();
                     }
                     if (resObject.getString("status").equals("NU01")) {
-                        makeToast("Username sudah digunakan");
+                        makeToast(resObject.getString("message"));
                     } else {
                         JSONObject val = resObject.getJSONObject("data");
                         Users users = new Users(val);

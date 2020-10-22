@@ -14,31 +14,32 @@
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/bgColor"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:weightSum="100">
+            android:padding="10dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_input"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:background="@android:color/white"
                 android:padding="24dp"
-                android:layout_weight="92">
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
                     android:id="@+id/img_profile"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
                     android:background="@drawable/add_image"
-                    android:scaleType="fitXY"
                     android:contentDescription="@string/profil"
+                    android:scaleType="fitXY"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/text_edt_nik"
@@ -50,10 +51,10 @@
                     app:layout_constraintTop_toBottomOf="@id/img_profile">
 
                     <EditText
-                        android:id="@+id/txt_edt_nik"
+                        android:id="@+id/input_nik"
+                        style="@style/MyEditText"
                         android:hint="@string/nik"
-                        android:importantForAutofill="no"
-                        style="@style/MyEditText" />
+                        android:importantForAutofill="no" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -67,10 +68,10 @@
                     app:layout_constraintTop_toBottomOf="@id/text_edt_nik">
 
                     <EditText
-                        android:id="@+id/txt_edt_name"
+                        android:id="@+id/input_nama"
+                        style="@style/MyEditText"
                         android:hint="@string/nama_lengkap"
-                        android:importantForAutofill="no"
-                        style="@style/MyEditText" />
+                        android:importantForAutofill="no" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,10 +85,10 @@
                     app:layout_constraintTop_toBottomOf="@id/text_edt_name">
 
                     <EditText
-                        android:id="@+id/txt_edt_pob"
+                        android:id="@+id/input_tempat_lahir"
+                        style="@style/MyEditText"
                         android:hint="@string/tempat_lahir"
-                        android:importantForAutofill="no"
-                        style="@style/MyEditText" />
+                        android:importantForAutofill="no" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,11 +102,11 @@
                     app:layout_constraintTop_toBottomOf="@id/text_edt_pob">
 
                     <EditText
-                        android:id="@+id/txt_edt_dob"
-                        android:hint="@string/tanggal_lahir"
+                        android:id="@+id/input_tanggal_lahir"
+                        style="@style/MyEditText"
                         android:focusableInTouchMode="false"
-                        android:importantForAutofill="no"
-                        style="@style/MyEditText" />
+                        android:hint="@string/tanggal_lahir"
+                        android:importantForAutofill="no" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -119,10 +120,28 @@
                     app:layout_constraintTop_toBottomOf="@id/text_edt_dob">
 
                     <EditText
-                        android:id="@+id/txt_edt_adr"
+                        android:id="@+id/input_alamat"
+                        style="@style/MyEditText"
                         android:hint="@string/alamat"
+                        android:importantForAutofill="no" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:hintTextAppearance="@style/MyHintStyle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_edt_alamat">
+
+                    <EditText
+                        android:id="@+id/input_phone"
+                        style="@style/MyEditText"
+                        android:hint="@string/no_telpon"
                         android:importantForAutofill="no"
-                        style="@style/MyEditText" />
+                        android:inputType="phone" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -133,20 +152,20 @@
                     android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/text_edt_alamat">
+                    app:layout_constraintTop_toBottomOf="@id/text_phone">
 
                     <TextView
+                        style="@style/TextView.InputLabel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/jekel"
-                        style="@style/TextView.InputLabel" />
+                        android:text="@string/jekel" />
 
                     <Spinner
-                        android:id="@+id/txt_edt_jekel"
+                        android:id="@+id/input_jekel"
+                        style="@style/Widget.AppCompat.Spinner.Underlined"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:backgroundTint="@android:color/black"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"/>
+                        android:backgroundTint="@android:color/black" />
                 </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -159,10 +178,10 @@
                     app:layout_constraintTop_toBottomOf="@id/text_edt_jekel">
 
                     <EditText
-                        android:id="@+id/txt_edt_username"
+                        android:id="@+id/input_username"
+                        style="@style/MyEditText"
                         android:hint="@string/username"
-                        android:importantForAutofill="no"
-                        style="@style/MyEditText" />
+                        android:importantForAutofill="no" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -171,17 +190,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/MyHintStyle"
-                    app:passwordToggleEnabled="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/text_edt_username">
+                    app:layout_constraintTop_toBottomOf="@id/text_edt_username"
+                    app:passwordToggleEnabled="true">
 
                     <EditText
-                        android:id="@+id/txt_edt_pass"
+                        android:id="@+id/input_password"
+                        style="@style/MyEditText"
                         android:hint="@string/password"
-                        android:inputType="textPassword"
                         android:importantForAutofill="no"
-                        style="@style/MyEditText" />
+                        android:inputType="textPassword" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -189,9 +208,12 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="8"
-                android:layout_marginTop="8dp">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_input">
 
                 <Button
                     android:id="@+id/btn_back"
@@ -222,7 +244,7 @@
                     app:layout_constraintWidth_percent="0.495" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
 

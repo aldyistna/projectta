@@ -38,7 +38,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/img_profile"
             app:layout_constraintWidth_default="percent"
-            app:layout_constraintWidth_percent="0.7" >
+            app:layout_constraintWidth_percent="0.75" >
 
             <!--NIK-->
             <TextView
@@ -137,22 +137,42 @@
                 style="@style/TextProfilePage.Value"
                 tools:text="jl. mustafa dg bunga"/>
 
+            <!--Alamat-->
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_below="@id/txt_address"
+                android:text="@string/no_telpon"
+                style="@style/TextProfilePage.Title"/>
+
+            <TextView
+                android:id="@+id/colon9"
+                android:layout_below="@id/txt_address"
+                android:layout_toEndOf="@id/tv_phone"
+                style="@style/TextProfilePage.Colon"/>
+
+            <TextView
+                android:id="@+id/txt_phone"
+                android:layout_below="@id/txt_address"
+                android:layout_toEndOf="@id/colon9"
+                style="@style/TextProfilePage.Value"
+                tools:text="081234567"/>
+
             <!--Jekel-->
             <TextView
                 android:id="@+id/tv_jekel"
-                android:layout_below="@id/txt_address"
+                android:layout_below="@id/txt_phone"
                 android:text="@string/jekel"
                 style="@style/TextProfilePage.Title"/>
 
             <TextView
                 android:id="@+id/colon6"
-                android:layout_below="@id/txt_address"
+                android:layout_below="@id/txt_phone"
                 android:layout_toEndOf="@id/tv_jekel"
                 style="@style/TextProfilePage.Colon"/>
 
             <TextView
                 android:id="@+id/txt_jekel"
-                android:layout_below="@id/txt_address"
+                android:layout_below="@id/txt_phone"
                 android:layout_toEndOf="@id/colon6"
                 style="@style/TextProfilePage.Value"
                 tools:text="Laki-laki"/>

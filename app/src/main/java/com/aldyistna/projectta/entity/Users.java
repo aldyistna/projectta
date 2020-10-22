@@ -17,6 +17,7 @@ public class Users implements Parcelable {
     private String password;
     private String role;
     private String foto;
+    private String phone;
 
     public Users() {}
 
@@ -33,6 +34,7 @@ public class Users implements Parcelable {
             String password = object.getString("password");
             String role = object.getString("role");
             String foto = object.getString("foto");
+            String phone = object.getString("no_telp");
 
             this.id = id;
             this.nik = nik;
@@ -45,6 +47,7 @@ public class Users implements Parcelable {
             this.password = password;
             this.role = role;
             this.foto = foto;
+            this.phone = phone;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,6 +65,7 @@ public class Users implements Parcelable {
         password = in.readString();
         role = in.readString();
         foto = in.readString();
+        phone = in.readString();
     }
 
     public static final Creator<Users> CREATOR = new Creator<Users>() {
@@ -164,6 +168,14 @@ public class Users implements Parcelable {
         this.foto = foto;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -182,5 +194,6 @@ public class Users implements Parcelable {
         dest.writeString(password);
         dest.writeString(role);
         dest.writeString(foto);
+        dest.writeString(phone);
     }
 }

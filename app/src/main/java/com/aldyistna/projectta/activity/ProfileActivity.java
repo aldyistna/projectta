@@ -46,7 +46,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private void setView(Users users) {
         ImageView imgProfilePic = findViewById(R.id.img_profile);
 
-        if (users.getFoto() == null) {
+        if (users.getFoto() == null || users.getFoto().equals("null") || users.getFoto().isEmpty() || users.getFoto().equals("")) {
             imgProfilePic.setImageResource(R.drawable.no_photo);
         } else {
             Glide.with(this)
@@ -70,6 +70,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         TextView txtAddress = findViewById(R.id.txt_address);
         txtAddress.setText(users.getAlamat());
+
+        TextView txtPhone = findViewById(R.id.txt_phone);
+        txtPhone.setText(users.getPhone());
 
         TextView txtJekel = findViewById(R.id.txt_jekel);
         txtJekel.setText(users.getJekel());

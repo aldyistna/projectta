@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
@@ -41,13 +42,13 @@ import java.util.Objects;
 import cz.msebera.android.httpclient.Header;
 
 public class AddLaporanActivity extends AppCompatActivity implements View.OnClickListener{
-    private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final String TAG = AddLaporanActivity.class.getSimpleName();
     private static final String API_URL = BuildConfig.API_URL;
 
     SPManager spManager;
     InputMethodManager inputManager;
     ImageView imgFoto;
-    EditText edtLoc, edtKet;
+    EditText edtLoc, edtKet, edtPhone, edtSaksi;
     Button btnNext;
     ProgressDialog progressDialog;
     File images = null;
@@ -80,6 +81,8 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
 
         edtLoc = findViewById(R.id.txt_loc);
         edtKet = findViewById(R.id.txt_ket);
+        edtPhone = findViewById(R.id.txt_edt_phone);
+        edtSaksi = findViewById(R.id.txt_saksi);
 
         progressDialog = new ProgressDialog(this);
 
@@ -97,18 +100,20 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
     private void captureImage() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            try {
-                images = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            images = createImageFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            if (images != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.aldyistna.projectta.fileprovider", images);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+        if (images != null) {
+            Uri photoURI = FileProvider.getUriForFile(this,
+                    "com.aldyistna.projectta.fileprovider", images);
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            try {
                 startActivityForResult(intent, 1);
+            } catch (ActivityNotFoundException e) {
+                Log.e(TAG, "captureImage: exception");
             }
         }
     }
@@ -159,7 +164,9 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
             }
             String loc = edtLoc.getText().toString();
             String ket = edtKet.getText().toString();
-            if (loc.trim().length() > 0 && ket.trim().length() > 0) {
+            String phone = edtPhone.getText().toString();
+            String saksi = edtSaksi.getText().toString();
+            if (loc.trim().length() > 0 && ket.trim().length() > 0 && phone.trim().length() > 0 && saksi.trim().length() > 0) {
                 if (inputManager != null) {
                     if (getCurrentFocus() != null) {
                         inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
@@ -170,22 +177,24 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
                     progressDialog.setMessage("Silahkan tunggu...");
                     progressDialog.setCancelable(false);
                     progressDialog.show();
-                    postLaporan(loc, ket);
+                    postLaporan(loc, ket, phone, saksi);
                 } else {
                     makeToast(getString(R.string.no_internet));
                 }
             } else {
-                makeToast("Lokasi dan Keterangan tidak boleh kosong");
+                makeToast("Lokasi, Keterangan, Telpon dan Saksi Mata tidak boleh kosong");
             }
         }
     }
 
-    private void postLaporan(String loc, String ket) {
+    private void postLaporan(String loc, String ket, String phone, String saksi) {
         AsyncHttpClient client = new AsyncHttpClient();
 
         RequestParams params = new RequestParams();
         params.put("location", loc);
         params.put("keterangan", ket);
+        params.put("phone", phone);
+        params.put("saksi", saksi);
         params.put("status", "Verification");
         params.put("username", spManager.getSpUserName());
         File file = null;
@@ -195,6 +204,7 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
                 params.put("file", file);
             } catch (FileNotFoundException e) {
                 makeToast("Silahkan masukkan foto");
+                return;
             }
         }
 
@@ -214,28 +224,18 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
                         Log.e(TAG + " onSuccess", String.valueOf(deleted));
                     }
                 }
+                currentPhotoPath = "";
                 if(progressDialog.isShowing()){
                     progressDialog.dismiss();
                 }
                 makeToast("Success add laporan");
-                startActivity(new Intent(AddLaporanActivity.this, ListLaporanActivity.class));
+                startActivity(new Intent(AddLaporanActivity.this, ListLaporanActivity.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 finish();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                if (images != null) {
-                    if (images.exists()) {
-                        Boolean deleted = images.delete();
-                        Log.e(TAG + " onFailure", String.valueOf(deleted));
-                    }
-                }
-                if (finalFile != null) {
-                    if (finalFile.exists()) {
-                        Boolean deleted = images.delete();
-                        Log.e(TAG + " onFailure", String.valueOf(deleted));
-                    }
-                }
                 if(progressDialog.isShowing()){
                     progressDialog.dismiss();
                 }

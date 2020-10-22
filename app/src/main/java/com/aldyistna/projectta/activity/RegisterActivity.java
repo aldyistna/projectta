@@ -66,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     ProgressDialog progressDialog;
 
     DatePickerDialog picker;
-    EditText edtNIK, edtNama, edtPOB, edtDOB, edtAlamat, edtUsername, edtPass;
+    EditText edtNIK, edtNama, edtPOB, edtDOB, edtAlamat, edtUsername, edtPass, edtPhone;
     Spinner edtJekel;
     ImageView imgFoto;
 
@@ -89,7 +89,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 getSystemService(Context.INPUT_METHOD_SERVICE);
 
         final List<String> jekelList = new ArrayList<>(Arrays.asList(listJekel));
-        edtJekel = findViewById(R.id.txt_edt_jekel);
+        edtJekel = findViewById(R.id.input_jekel);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_textview, jekelList) {
             @Override
             public boolean isEnabled(int pos) {
@@ -110,13 +110,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         };
         edtJekel.setAdapter(adapter);
 
-        edtNIK = findViewById(R.id.txt_edt_nik);
-        edtNama = findViewById(R.id.txt_edt_name);
-        edtPOB = findViewById(R.id.txt_edt_pob);
-        edtDOB = findViewById(R.id.txt_edt_dob);
-        edtAlamat = findViewById(R.id.txt_edt_adr);
-        edtUsername = findViewById(R.id.txt_edt_username);
-        edtPass = findViewById(R.id.txt_edt_pass);
+        edtNIK = findViewById(R.id.input_nik);
+        edtNama = findViewById(R.id.input_nama);
+        edtPOB = findViewById(R.id.input_tempat_lahir);
+        edtDOB = findViewById(R.id.input_tanggal_lahir);
+        edtAlamat = findViewById(R.id.input_alamat);
+        edtPhone = findViewById(R.id.input_phone);
+        edtUsername = findViewById(R.id.input_username);
+        edtPass = findViewById(R.id.input_password);
 
         progressDialog = new ProgressDialog(this);
 
@@ -172,12 +173,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     public void selectImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
 
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            try {
-                file = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        try {
+            file = createImageFile();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         startActivityForResult(intent, 2);
@@ -220,17 +219,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             onBackPressed();
             finish();
         } else if (v.getId() == R.id.btn_save) {
-            EditText[] fields = {edtNIK, edtNama, edtPOB, edtDOB, edtAlamat, edtUsername, edtPass};
+            EditText[] fields = {edtNIK, edtNama, edtPOB, edtDOB, edtAlamat, edtUsername, edtPass, edtPhone};
             for (EditText current : fields) {
                 String strCurrent = current.getText().toString();
                 if (!(strCurrent.trim().length() > 0)) {
-                    makeToast("Field cannot empty");
+                    makeToast("Field " + current.getResources().getResourceName(current.getId()).split("/")[1] + " tidak boleh kosong");
                     return;
                 }
             }
 
             if (edtJekel.getSelectedItem() == listJekel[0]) {
-                makeToast("Field cannot empty");
+                makeToast("Field jenis kelamin tidak boleh kosong");
                 return;
             }
 
@@ -260,6 +259,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         params.put("pob", edtPOB.getText());
         params.put("dob", edtDOB.getText());
         params.put("alamat", edtAlamat.getText());
+        params.put("phone", edtPhone.getText());
         params.put("jekel", edtJekel.getSelectedItem());
         params.put("username", edtUsername.getText());
         params.put("password", edtPass.getText());
@@ -290,7 +290,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     }
 
                     if (resObject.getString("status").equals("NU01")) {
-                        makeToast("Username sudah digunakan");
+                        makeToast(resObject.getString("message"));
                     } else {
                         if (file != null) {
                             if (file.exists()) {

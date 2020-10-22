@@ -83,13 +83,48 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:hintTextAppearance="@style/MyHintStyle"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/text_phone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <EditText
                     android:id="@+id/txt_ket"
                     android:hint="@string/keterangan"
+                    android:importantForAutofill="no"
+                    style="@style/MyEditText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_phone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/MyHintStyle"
+                app:layout_constraintBottom_toTopOf="@id/text_saksi"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <EditText
+                    android:id="@+id/txt_edt_phone"
+                    android:hint="@string/no_telpon"
+                    android:importantForAutofill="no"
+                    android:inputType="phone"
+                    style="@style/MyEditText" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/text_saksi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:hintTextAppearance="@style/MyHintStyle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <EditText
+                    android:id="@+id/txt_saksi"
+                    android:hint="@string/saksi"
                     android:importantForAutofill="no"
                     style="@style/MyEditText" />
 

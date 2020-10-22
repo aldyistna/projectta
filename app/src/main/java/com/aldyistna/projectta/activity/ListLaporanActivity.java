@@ -18,7 +18,6 @@ import android.graphics.pdf.PdfDocument;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -44,6 +43,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,6 +83,7 @@ public class ListLaporanActivity extends AppCompatActivity implements BottomNavi
     ProgressDialog progressDialog;
     boolean clicked = false;
     Laporan laporan = null;
+    Uri uriFile = null;
 
     static Paint paint = new Paint();
     static int y = 30;
@@ -293,128 +294,114 @@ public class ListLaporanActivity extends AppCompatActivity implements BottomNavi
         if (requestCode == 12) {
             if (data != null) {
                 Uri uri = data.getData();
+                uriFile = uri;
                 createPDF(this, uri, laporan);
                 handleBackPressed();
             }
         }
     }
 
-    private static void createPDF(final Context context, final Uri uri, final Laporan laporan) {
-        final ProgressDialog progress = new ProgressDialog(context);
-        class CreatePDF extends AsyncTask<Void, Void, Void> {
+    public void createPDF(final Context context, final Uri uri, final Laporan laporan) {
+        progressDialog.setTitle("Proses");
+        progressDialog.setMessage("Silahkan tunggu...");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
 
+        Glide.with(context)
+                .asBitmap()
+                .load(laporan.getGambar())
+                .placeholder(new ColorDrawable(Color.BLACK))
+                .error(R.drawable.error_image)
+                .into(new CustomTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        Users users = laporan.getUsers();
+
+                        Locale locale = context.getResources().getConfiguration().locale;
+                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", locale);
+                        String newDate = "";
+                        try {
+                            Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX", Locale.getDefault()).parse(laporan.getTanggal());
+                            assert date != null;
+                            newDate = df.format(date);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        PdfDocument pdf = new PdfDocument();
+                        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595,842,1).create();
+                        PdfDocument.Page page = pdf.startPage(pageInfo);
+
+                        paint.setTextSize(16);
+                        Canvas canvas = page.getCanvas();
+
+                        canvas.drawText("Judul Laporan", 16, y, paint);
+                        canvas.drawText(":", 125, y, paint);
+                        drawText(canvas, laporan.getKeterangan(), 135, paint);
+                        y += paint.descent() - paint.ascent() + 8;
+
+                        canvas.drawText("Lokasi", 16, y, paint);
+                        canvas.drawText(":", 125, y, paint);
+                        drawText(canvas, laporan.getLocation(), 135, paint);
+                        y += paint.descent() - paint.ascent() + 8;
+
+                        canvas.drawText("Tanggal", 16, y, paint);
+                        canvas.drawText(":", 125, y, paint);
+                        drawText(canvas, newDate, 135, paint);
+                        y += paint.descent() - paint.ascent() + 8;
+
+                        canvas.drawText("Status", 16, y, paint);
+                        canvas.drawText(":", 125, y, paint);
+                        drawText(canvas, laporan.getStatus(), 135, paint);
+                        y += paint.descent() - paint.ascent() + 8;
+
+                        canvas.drawText("Pelapor", 16, y, paint);
+                        canvas.drawText(":", 125, y, paint);
+                        drawText(canvas, users.getName(), 135, paint);
+                        y += paint.descent() - paint.ascent() + 8;
+
+                        canvas.drawText("No. Telpon", 16, y, paint);
+                        canvas.drawText(":", 125, y, paint);
+                        drawText(canvas, laporan.getPhone(), 135, paint);
+                        y += paint.descent() - paint.ascent() + 8;
+
+                        canvas.drawText("Saksi Mata", 16, y, paint);
+                        canvas.drawText(":", 125, y, paint);
+                        drawText(canvas, laporan.getSaksi(), 135, paint);
+                        y += paint.descent() - paint.ascent() + 8;
+
+                        resource = Bitmap.createScaledBitmap(resource, 563, 842 - y - 16, false);
+                        canvas.drawBitmap(resource, 16, y, paint);
+
+                        pdf.finishPage(page);
+
+                        try {
+                            OutputStream outputStream = context.getContentResolver().openOutputStream(uri);
+                            pdf.writeTo(outputStream);
+                            Objects.requireNonNull(outputStream).close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                        paint = new Paint();
+                        y = 30;
+                        pdf.close();
+
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                    }
+                });
+
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                progress.setTitle("Proses");
-                progress.setMessage("Silahkan tunggu...");
-                progress.setCancelable(false);
-                progress.show();
-            }
-
-            @Override
-            protected Void doInBackground(Void... voids) {
-
-                Glide.with(context)
-                        .asBitmap()
-                        .load(laporan.getGambar())
-                        .placeholder(new ColorDrawable(Color.BLACK))
-                        .error(R.drawable.error_image)
-                        .into(new CustomTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                                Users users = laporan.getUsers();
-
-                                Locale locale = context.getResources().getConfiguration().locale;
-                                DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", locale);
-                                String newDate = "";
-                                try {
-                                    Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX", Locale.getDefault()).parse(laporan.getTanggal());
-                                    assert date != null;
-                                    newDate = df.format(date);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
-
-                                PdfDocument pdf = new PdfDocument();
-                                PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595,842,1).create();
-                                PdfDocument.Page page = pdf.startPage(pageInfo);
-
-                                paint.setTextSize(16);
-                                Canvas canvas = page.getCanvas();
-//                                canvas.drawText("Judul Laporan: " + laporan.getKeterangan(), 16, y, paint);
-                                canvas.drawText("Judul Laporan", 16, y, paint);
-                                canvas.drawText(":", 125, y, paint);
-                                drawText(canvas, laporan.getKeterangan(), 135, paint);
-                                y += paint.descent() - paint.ascent() + 8;
-
-//                                canvas.drawText("Lokasi: " + laporan.getLocation(), 16, y, paint);
-                                canvas.drawText("Lokasi", 16, y, paint);
-                                canvas.drawText(":", 125, y, paint);
-                                drawText(canvas, laporan.getLocation(), 135, paint);
-                                y += paint.descent() - paint.ascent() + 8;
-
-//                                canvas.drawText("Tanggal: " + newDate, 16, y, paint);
-                                canvas.drawText("Tanggal", 16, y, paint);
-                                canvas.drawText(":", 125, y, paint);
-                                drawText(canvas, newDate, 135, paint);
-                                y += paint.descent() - paint.ascent() + 8;
-
-//                                canvas.drawText("Status: " + laporan.getStatus(), 16, y, paint);
-                                canvas.drawText("Status", 16, y, paint);
-                                canvas.drawText(":", 125, y, paint);
-                                drawText(canvas, laporan.getStatus(), 135, paint);
-                                y += paint.descent() - paint.ascent() + 8;
-
-//                                canvas.drawText("Pelapor: " + users.getName(), 16, y, paint);
-                                canvas.drawText("Pelapor", 16, y, paint);
-                                canvas.drawText(":", 125, y, paint);
-                                drawText(canvas, users.getName(), 135, paint);
-                                y += paint.descent() - paint.ascent() + 8;
-
-                                resource = Bitmap.createScaledBitmap(resource, 563, 842 - y - 16, false);
-                                canvas.drawBitmap(resource, 16, y, paint);
-
-                                /*try {
-                                    y += paint.descent() - paint.ascent() + 16;
-                                    Bitmap bitmap = Picasso.get().load(laporan.getGambar()).get();
-                                    bitmap = Bitmap.createScaledBitmap(bitmap, 563, 842 - y - 16, false);
-                                    canvas.drawBitmap(bitmap, 16, y, paint);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }*/
-
-                                pdf.finishPage(page);
-
-                                try {
-                                    OutputStream outputStream = context.getContentResolver().openOutputStream(uri);
-                                    pdf.writeTo(outputStream);
-                                    Objects.requireNonNull(outputStream).close();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-
-                                paint = new Paint();
-                                y = 30;
-                                pdf.close();
-
-                            }
-
-                            @Override
-                            public void onLoadCleared(@Nullable Drawable placeholder) {
-                            }
-                        });
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
-
+            public void run() {
                 final String CHANNEL_ID = "Channel_1";
                 final String CHANNEL_NAME = "PDF channel";
-                if(progress.isShowing()){
-                    progress.dismiss();
+                if(progressDialog.isShowing()){
+                    progressDialog.dismiss();
                 }
 
                 Intent openIntent = new Intent(Intent.ACTION_VIEW);
@@ -452,13 +439,11 @@ public class ListLaporanActivity extends AppCompatActivity implements BottomNavi
                 }
                 Toast.makeText(context, "Saved", Toast.LENGTH_SHORT).show();
             }
-        }
+        }, 1000);
 
-        CreatePDF createPDF = new CreatePDF();
-        createPDF.execute();
     }
 
-    public static void drawText(Canvas canvas, String text, int x, Paint paint) {
+    public void drawText(Canvas canvas, String text, int x, Paint paint) {
         int length = text.length();
         if (text.length() > 50) {
             String newText1 = text.substring(0, text.lastIndexOf(' ', 50));
