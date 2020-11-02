@@ -37,4 +37,6 @@
     <string name="download">Download</string>
     <string name="no_telpon">No. Telpon</string>
     <string name="saksi">Saksi Mata</string>
+    <string name="cari">Cari Nama Pelapor</string>
+    <string name="search">Search</string>
 </resources>

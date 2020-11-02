@@ -44,7 +44,7 @@ public class LaporanViewModel extends ViewModel {
         handleFailureFinish = fail;
     }
 
-    public void setLaporan(final String status, Context context) {
+    public void setLaporan(final String status, Context context, final String pelapor) {
         SPManager spManager = new SPManager(context);
         String paramQuery = "";
         AsyncHttpClient client = new AsyncHttpClient();
@@ -52,7 +52,11 @@ public class LaporanViewModel extends ViewModel {
 
         if (spManager.getSpUserRole().equals("user")) {
             String userName = spManager.getSpUserName();
-            paramQuery = "&dibuat_oleh=" + userName;
+            paramQuery += "&dibuat_oleh=" + userName;
+        }
+
+        if (!pelapor.equals("")) {
+            paramQuery += "&pelapor=" + pelapor;
         }
 
         client.get(API_URL + "laporan?status=" + status + paramQuery, new AsyncHttpResponseHandler() {

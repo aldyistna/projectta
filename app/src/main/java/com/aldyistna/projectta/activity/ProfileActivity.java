@@ -8,8 +8,10 @@ import com.aldyistna.projectta.utils.SPManager;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -89,13 +91,28 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if (v.getId() == R.id.btn_edit) {
             startActivity(new Intent(ProfileActivity.this, EditProfileActivity.class));
         } else if (v.getId() == R.id.btn_logout) {
-            spManager.saveString(SPManager.SP_USER, "");
-            spManager.saveString(SPManager.SP_USER_NAME, "");
-            spManager.saveInt(SPManager.SP_USER_ID, 0);
-            spManager.saveBoolean(SPManager.SP_LOGIN, false);
-            finish();
-            startActivity(new Intent(ProfileActivity.this, MainActivity.class)
-                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Proses");
+            progressDialog.setMessage("Silahkan tunggu...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if(progressDialog.isShowing()){
+                        progressDialog.dismiss();
+                    }
+                    spManager.saveString(SPManager.SP_USER, "");
+                    spManager.saveString(SPManager.SP_USER_NAME, "");
+                    spManager.saveInt(SPManager.SP_USER_ID, 0);
+                    spManager.saveBoolean(SPManager.SP_LOGIN, false);
+                    finish();
+                    startActivity(new Intent(ProfileActivity.this, MainActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                }
+            }, 1000);
         }
     }
 }
