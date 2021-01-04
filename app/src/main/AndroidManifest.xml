@@ -42,6 +42,7 @@
         <activity
             android:name=".activity.ListLaporanActivity"
             android:label="@string/title_activity_list_laporan"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.EditProfileActivity"

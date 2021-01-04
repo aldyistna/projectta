@@ -119,7 +119,11 @@ public class FinishFragment extends Fragment implements LaporanViewModel.handleF
                 } else {
                     String sMatch = "Tidak ada laporan selesai";
                     if (!searchValue.equals("")) {
-                        sMatch = "Tidak ada pelapor bernama " + searchValue;
+                        if (searchValue.matches("[-+]?\\d*\\.?\\d+")) {
+                            sMatch = "Tidak ada ID Laporan " + searchValue;
+                        } else {
+                            sMatch = "Tidak ada pelapor bernama " + searchValue;
+                        }
                     }
                     txtEmpty.setText(sMatch);
                     txtEmpty.setVisibility(View.VISIBLE);

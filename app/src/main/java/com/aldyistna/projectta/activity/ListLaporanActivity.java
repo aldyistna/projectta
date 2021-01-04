@@ -335,39 +335,44 @@ public class ListLaporanActivity extends AppCompatActivity implements BottomNavi
                         paint.setTextSize(16);
                         Canvas canvas = page.getCanvas();
 
+                        canvas.drawText("No. ID Laporan", 16, y, paint);
+                        canvas.drawText(":", 130, y, paint);
+                        drawText(canvas, laporan.getLap_id(), 140, paint);
+                        y += paint.descent() - paint.ascent() + 8;
+
                         canvas.drawText("Judul Laporan", 16, y, paint);
-                        canvas.drawText(":", 125, y, paint);
-                        drawText(canvas, laporan.getKeterangan(), 135, paint);
+                        canvas.drawText(":", 130, y, paint);
+                        drawText(canvas, laporan.getKeterangan(), 140, paint);
                         y += paint.descent() - paint.ascent() + 8;
 
                         canvas.drawText("Lokasi", 16, y, paint);
-                        canvas.drawText(":", 125, y, paint);
-                        drawText(canvas, laporan.getLocation(), 135, paint);
+                        canvas.drawText(":", 130, y, paint);
+                        drawText(canvas, laporan.getLocation(), 140, paint);
                         y += paint.descent() - paint.ascent() + 8;
 
                         canvas.drawText("Tanggal", 16, y, paint);
-                        canvas.drawText(":", 125, y, paint);
-                        drawText(canvas, newDate, 135, paint);
+                        canvas.drawText(":", 130, y, paint);
+                        drawText(canvas, newDate, 140, paint);
                         y += paint.descent() - paint.ascent() + 8;
 
                         canvas.drawText("Status", 16, y, paint);
-                        canvas.drawText(":", 125, y, paint);
-                        drawText(canvas, laporan.getStatus(), 135, paint);
+                        canvas.drawText(":", 130, y, paint);
+                        drawText(canvas, laporan.getStatus(), 140, paint);
                         y += paint.descent() - paint.ascent() + 8;
 
                         canvas.drawText("Pelapor", 16, y, paint);
-                        canvas.drawText(":", 125, y, paint);
-                        drawText(canvas, users.getName(), 135, paint);
+                        canvas.drawText(":", 130, y, paint);
+                        drawText(canvas, users.getName(), 140, paint);
                         y += paint.descent() - paint.ascent() + 8;
 
                         canvas.drawText("No. Telpon", 16, y, paint);
-                        canvas.drawText(":", 125, y, paint);
-                        drawText(canvas, laporan.getPhone(), 135, paint);
+                        canvas.drawText(":", 130, y, paint);
+                        drawText(canvas, laporan.getPhone(), 140, paint);
                         y += paint.descent() - paint.ascent() + 8;
 
                         canvas.drawText("Saksi Mata", 16, y, paint);
-                        canvas.drawText(":", 125, y, paint);
-                        drawText(canvas, laporan.getSaksi(), 135, paint);
+                        canvas.drawText(":", 130, y, paint);
+                        drawText(canvas, laporan.getSaksi(), 140, paint);
                         y += paint.descent() - paint.ascent() + 8;
 
                         resource = Bitmap.createScaledBitmap(resource, 563, 842 - y - 16, false);

@@ -56,7 +56,7 @@ public class LaporanAdapter extends RecyclerView.Adapter<LaporanAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgLaporan;
-        TextView txtStatus, txtLocation, txtTgl, txtKet;
+        TextView txtStatus, txtLocation, txtTgl, txtKet, txtId, txtPelapor;
         RelativeLayout layoutStatus;
         ConstraintLayout itemList, layoutCheck;
         public ViewHolder(@NonNull View view) {
@@ -67,6 +67,8 @@ public class LaporanAdapter extends RecyclerView.Adapter<LaporanAdapter.ViewHold
             txtLocation = view.findViewById(R.id.txt_alamat_lapor);
             txtTgl = view.findViewById(R.id.txt_tgl_lapor);
             txtKet = view.findViewById(R.id.txt_ket_lapor);
+            txtId = view.findViewById(R.id.txt_lap_id);
+            txtPelapor = view.findViewById(R.id.txt_pelapor);
             layoutStatus = view.findViewById(R.id.status);
             itemList = view.findViewById(R.id.item_list);
             layoutCheck = view.findViewById(R.id.layout_check);
@@ -101,6 +103,10 @@ public class LaporanAdapter extends RecyclerView.Adapter<LaporanAdapter.ViewHold
 
             txtLocation.setText(laporan.getLocation());
             txtKet.setText(laporan.getKeterangan());
+            String lapId = "No. ID Laporan : " + laporan.getLap_id();
+            txtId.setText(lapId);
+            String pelapor = "Pelapor : " + laporan.getUsers().getName();
+            txtPelapor.setText(pelapor);
 
             Locale locale = context.getResources().getConfiguration().locale;
             DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", locale);
