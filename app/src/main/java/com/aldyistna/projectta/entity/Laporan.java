@@ -12,6 +12,7 @@ public class Laporan {
     private String phone;
     private String saksi;
     private String gambar;
+    private String kategori;
     private Users users;
     private boolean selected;
 
@@ -38,6 +39,7 @@ public class Laporan {
             String phone = object.getString("no_telp");
             String saksi = object.getString("saksi_mata");
             String gambar = object.getString("gambar");
+            String kategori = object.getString("jenis").equals("null") ? "-" : object.getString("jenis");
             Users users = new Users(object.getJSONObject("user"));
 
             this.lap_id = lap_id;
@@ -48,6 +50,7 @@ public class Laporan {
             this.phone = phone;
             this.saksi = saksi;
             this.gambar = gambar;
+            this.kategori = kategori;
             this.users = users;
             this.selected = false;
         } catch (JSONException e) {
@@ -133,5 +136,13 @@ public class Laporan {
 
     public void setSaksi(String saksi) {
         this.saksi = saksi;
+    }
+
+    public String getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
     }
 }

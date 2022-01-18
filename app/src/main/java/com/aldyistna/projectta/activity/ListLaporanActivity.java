@@ -375,6 +375,11 @@ public class ListLaporanActivity extends AppCompatActivity implements BottomNavi
                         drawText(canvas, laporan.getSaksi(), 140, paint);
                         y += paint.descent() - paint.ascent() + 8;
 
+                        canvas.drawText("Kategori", 16, y, paint);
+                        canvas.drawText(":", 130, y, paint);
+                        drawText(canvas, laporan.getKategori(), 140, paint);
+                        y += paint.descent() - paint.ascent() + 8;
+
                         resource = Bitmap.createScaledBitmap(resource, 563, 842 - y - 16, false);
                         canvas.drawBitmap(resource, 16, y, paint);
 

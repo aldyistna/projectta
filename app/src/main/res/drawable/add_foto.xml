@@ -10,7 +10,7 @@
 
     <item android:gravity="center">
         <bitmap
-            android:src="@drawable/add_image"/>
+            android:src="@drawable/add_image_new" />
     </item>
 
 </layer-list>

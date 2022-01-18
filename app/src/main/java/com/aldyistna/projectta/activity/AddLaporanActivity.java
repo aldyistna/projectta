@@ -1,5 +1,6 @@
 package com.aldyistna.projectta.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
@@ -8,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,10 +20,14 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aldyistna.projectta.BuildConfig;
@@ -35,7 +41,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -49,10 +58,13 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
     InputMethodManager inputManager;
     ImageView imgFoto;
     EditText edtLoc, edtKet, edtPhone, edtSaksi;
+    Spinner edtKategori;
     Button btnNext;
     ProgressDialog progressDialog;
     File images = null;
     String currentPhotoPath = "";
+
+    private final String[] listKategori = {"- Pilih Kategori -", "Pelayanan Publik", "Non Pelayanan Publik"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +90,28 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
         spManager = new SPManager(this);
         inputManager = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        final List<String> katList = new ArrayList<>(Arrays.asList(listKategori));
+        edtKategori = findViewById(R.id.input_kat);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_textview, katList) {
+            @Override
+            public boolean isEnabled(int pos) {
+                return pos != 0;
+            }
+
+            @Override
+            public View getDropDownView(int pos, View convertView, @NonNull ViewGroup parent) {
+                View view = super.getDropDownView(pos, convertView, parent);
+                TextView tv = (TextView) view;
+                if (pos == 0) {
+                    tv.setTextColor(Color.GRAY);
+                } else {
+                    tv.setTextColor(Color.BLACK);
+                }
+                return view;
+            }
+        };
+        edtKategori.setAdapter(adapter);
 
         edtLoc = findViewById(R.id.txt_loc);
         edtKet = findViewById(R.id.txt_ket);
@@ -162,6 +196,10 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
                 makeToast("Tidak ada foto untuk dilaporkan");
                 return;
             }
+            if (edtKategori.getSelectedItem() == listKategori[0]) {
+                makeToast("Field kategori tidak boleh kosong");
+                return;
+            }
             String loc = edtLoc.getText().toString();
             String ket = edtKet.getText().toString();
             String phone = edtPhone.getText().toString();
@@ -197,6 +235,7 @@ public class AddLaporanActivity extends AppCompatActivity implements View.OnClic
         params.put("saksi", saksi);
         params.put("status", "Verification");
         params.put("username", spManager.getSpUserName());
+        params.put("jenis", edtKategori.getSelectedItem());
         File file = null;
         if (!currentPhotoPath.equals("")) {
             try {
